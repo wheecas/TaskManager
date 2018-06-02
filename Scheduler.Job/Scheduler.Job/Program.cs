@@ -1,7 +1,11 @@
 ﻿using Autofac;
+using AutoMapper;
 using Infrustructure.Utilities;
+using Scheduler.Job.Repository.DBContext;
+using Scheduler.Job.TaskManager;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,8 +18,12 @@ namespace Scheduler.Job
     {
         static void Main(string[] args)
         {
-           
             AutoFac();
+            Mapper.Initialize(cfg =>
+            {
+                cfg.AddProfile<TaskConfigProfile>();//添加一个配置文件
+            });
+            Database.SetInitializer<TaskConfigContext>(null);//关闭修改数据库表结构
             HostFactory.Run(x =>
             {
                 x.Service<SchedulerStart>(s =>
@@ -42,6 +50,7 @@ namespace Scheduler.Job
 
             var assembly = new Assembly[]
             {
+                Assembly.Load("Scheduler.Job.Repository"),
                 Assembly.Load("Scheduler.Job.Service"),
                 Assembly.Load("Scheduler.Job.TaskManager"),
                 Assembly.Load("Infrustructure")

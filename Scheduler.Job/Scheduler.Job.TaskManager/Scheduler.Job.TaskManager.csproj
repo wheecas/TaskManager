@@ -33,6 +33,9 @@
     <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
@@ -68,6 +71,7 @@
     <Compile Include="Quartz\ITaskHelper.cs" />
     <Compile Include="Quartz\QuartzHelper.cs" />
     <Compile Include="Quartz\TaskHelper.cs" />
+    <Compile Include="TaskConfigProfile.cs" />
     <Compile Include="Utils\JobBase.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +93,10 @@
     <ProjectReference Include="..\Scheduler.Job.Models\Scheduler.Job.Models.csproj">
       <Project>{757B6E1C-0A1F-4755-8E5B-C256F5B5378E}</Project>
       <Name>Scheduler.Job.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Job.Repository\Scheduler.Job.Repository.csproj">
+      <Project>{a13d9da2-91b1-471f-b5f7-ae8605533f29}</Project>
+      <Name>Scheduler.Job.Repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Job.Service\Scheduler.Job.Service.csproj">
       <Project>{f78cea15-176a-4d07-b319-f7fa1fd16a51}</Project>

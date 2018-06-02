@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 
 namespace Scheduler.Job.TaskManager.Quartz
@@ -37,6 +36,8 @@ namespace Scheduler.Job.TaskManager.Quartz
         private static IScheduler _scheduler = null;
 
         private static IList<TaskModel> _currentTaskList = null;
+
+     
 
         /// <summary>
         /// 
@@ -64,7 +65,7 @@ namespace Scheduler.Job.TaskManager.Quartz
                 {
                     if (_scheduler == null)
                     {
-                        #region quartz 实例配置
+                        #region quartz 实例配置，参考资料 http://www.cnblogs.com/mushroom/p/4231642.html
                         NameValueCollection properties = new NameValueCollection();
                         //存储类型
                         properties["quartz.jobStore.type"] = "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz";

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Scheduler.Job.Common.Config;
 using Scheduler.Job.Common.Utils;
 using Scheduler.Job.Models;
+using Scheduler.Job.Repository;
 
 namespace Scheduler.Job.TaskManager.Quartz
 {
@@ -11,11 +13,13 @@ namespace Scheduler.Job.TaskManager.Quartz
     /// </summary>
     public class TaskHelper : ITaskHelper
     {
-       
+        private readonly ITaskConfigRepository _taskConfigRepository;
 
-        public TaskHelper()
+        public TaskHelper(ITaskConfigRepository taskConfigRepository)
         {
+            _taskConfigRepository = taskConfigRepository;
         }
+      
 
         /// <summary>
         /// 配置文件地址
@@ -72,7 +76,14 @@ namespace Scheduler.Job.TaskManager.Quartz
         /// <returns></returns>
         private IList<TaskModel> TaskInDb()
         {
-            return null;
+            List<JobModel> list =  _taskConfigRepository.GetAllJobList().Result;
+            if (list == null)
+            {
+                return null;
+            }
+            List<TaskModel> taskModels = Mapper.Map<List<TaskModel>>(list);
+            return taskModels;
+            
         }
 
         /// <summary>
