@@ -66,13 +66,23 @@ namespace Scheduler.Job.TaskManager.Quartz
                     {
                         #region quartz 实例配置
                         NameValueCollection properties = new NameValueCollection();
-                        //properties["quartz.scheduler.instanceName"] = "ExampleQuartzScheduler";
-                        //properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
-                        //properties["quartz.threadPool.threadCount"] = "10";
-                        //properties["quartz.threadPool.threadPriority"] = "Normal";
-                        //properties["quartz.jobStore.misfireThreshold"] = "60000";
-                        //properties["quartz.jobStore.type"] = "Quartz.Simpl.RAMJobStore, Quartz";
-                        // 远程输出配置
+                        //存储类型
+                        properties["quartz.jobStore.type"] = "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz";
+                        //表明前缀
+                        properties["quartz.jobStore.tablePrefix"] = "QRTZ_";
+                        // Quartz Scheduler唯一实例ID，auto：自动生成
+                        properties["quartz.scheduler.instanceId"] = "AUTO";
+                        // 集群
+                        properties["quartz.jobStore.clustered"] = "true";
+                        //驱动类型
+                        properties["quartz.jobStore.driverDelegateType"] = "Quartz.Impl.AdoJobStore.SqlServerDelegate, Quartz";
+                        //数据源名称
+                        properties["quartz.jobStore.dataSource"] = "myDS";
+                        //连接字符串
+                        properties["quartz.dataSource.myDS.connectionString"] = SysConfig.SqlConnect;
+                        //sqlserver版本
+                        properties["quartz.dataSource.myDS.provider"] = "SqlServer-20";
+                        //远程配置
                         properties["quartz.scheduler.exporter.type"] = "Quartz.Simpl.RemotingSchedulerExporter, Quartz";
                         properties["quartz.scheduler.exporter.port"] = SysConfig.QuartzPort;
                         properties["quartz.scheduler.exporter.bindName"] = "QuartzScheduler";
