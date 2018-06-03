@@ -19,7 +19,7 @@ namespace Scheduler.Job.TaskManager.Quartz
         {
             _taskConfigRepository = taskConfigRepository;
         }
-      
+
 
         /// <summary>
         /// 配置文件地址
@@ -76,14 +76,14 @@ namespace Scheduler.Job.TaskManager.Quartz
         /// <returns></returns>
         private IList<TaskModel> TaskInDb()
         {
-            List<JobModel> list =  _taskConfigRepository.GetAllJobList().Result;
+            List<JobModel> list = _taskConfigRepository.GetAllJobList().Result;
             if (list == null)
             {
                 return null;
             }
             List<TaskModel> taskModels = Mapper.Map<List<TaskModel>>(list);
             return taskModels;
-            
+
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Scheduler.Job.TaskManager.Quartz
         /// <returns>所有启用的任务</returns>
         public IList<TaskModel> GetAllTaskList()
         {
-            if (SysConfig.StorageMode == 1)
+            if (int.Parse(System.Configuration.ConfigurationManager.AppSettings["StorageMode"]) == 1)
             {
                 return TaskInDb();
             }

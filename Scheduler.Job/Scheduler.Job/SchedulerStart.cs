@@ -13,8 +13,8 @@ namespace Scheduler.Job
 
         public void Start()
         {
-            //配置信息读取
-            ConfigInit.InitConfig();
+            ////配置信息读取
+            //ConfigInit.InitConfig();
             //初始化任务调度对象
             QuartzHelper.InitScheduler();
             // 启用任务调度

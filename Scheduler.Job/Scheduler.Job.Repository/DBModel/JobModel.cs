@@ -56,11 +56,5 @@ namespace Scheduler.Job.Repository
         /// 任务修改时间
         /// </summary>
         public DateTime UpdateTime { get; set; }
-
-        /// <summary>
-        /// 是否删除
-        /// </summary>
-        public int IsDelete { get; set; }
-
     }
 }

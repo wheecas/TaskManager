@@ -10,6 +10,7 @@ using Scheduler.Job.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 
@@ -25,9 +26,11 @@ namespace Scheduler.Job.TaskManager.Quartz
 
         private static readonly string Scheme = "tcp";
 
-        private static readonly string Server = SysConfig.QuartzServer;
+        private static readonly string Server = ConfigurationManager.AppSettings["QuartzServer"];
 
-        private static readonly string Port = SysConfig.QuartzPort;
+        private static readonly string Port = ConfigurationManager.AppSettings["QuartzPort"];
+
+        private static readonly string ConnectionString= ConfigurationManager.ConnectionStrings["SqlConnect"].ConnectionString.ToString();
         /// <summary>
         /// 缓存任务所在程序集信息
         /// </summary>
@@ -37,7 +40,7 @@ namespace Scheduler.Job.TaskManager.Quartz
 
         private static IList<TaskModel> _currentTaskList = null;
 
-     
+
 
         /// <summary>
         /// 
@@ -80,15 +83,16 @@ namespace Scheduler.Job.TaskManager.Quartz
                         //数据源名称
                         properties["quartz.jobStore.dataSource"] = "myDS";
                         //连接字符串
-                        properties["quartz.dataSource.myDS.connectionString"] = SysConfig.SqlConnect;
+                        properties["quartz.dataSource.myDS.connectionString"] = ConnectionString;
+
                         //sqlserver版本
                         properties["quartz.dataSource.myDS.provider"] = "SqlServer-20";
                         //远程配置
                         properties["quartz.scheduler.exporter.type"] = "Quartz.Simpl.RemotingSchedulerExporter, Quartz";
-                        properties["quartz.scheduler.exporter.port"] = SysConfig.QuartzPort;
+                        properties["quartz.scheduler.exporter.port"] = Port;
                         properties["quartz.scheduler.exporter.bindName"] = "QuartzScheduler";
                         properties["quartz.scheduler.exporter.channelType"] = Scheme;
-                     
+
                         #endregion
                         // 配置文件的方式，配置quartz实例
                         ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
@@ -127,6 +131,7 @@ namespace Scheduler.Job.TaskManager.Quartz
                         {
                             try
                             {
+
                                 ScheduleJob(taskUtil);
                             }
                             catch (Exception e)
@@ -216,14 +221,18 @@ namespace Scheduler.Job.TaskManager.Quartz
                 trigger.CronExpressionString = task.CronExpressionString;
                 trigger.Name = task.Id.ToString();
                 trigger.Description = task.TaskName;
-                _scheduler.ScheduleJob(job, trigger);
+                JobKey jk  = new JobKey(task.Id.ToString());
+                if (!_scheduler.CheckExists(jk))
+                {
+                    _scheduler.ScheduleJob(job, trigger);
+                }
                 if (task.Status == TaskStatus.STOP)
                 {
-                    JobKey jk = new JobKey(task.Id.ToString());
                     _scheduler.PauseJob(jk);
                 }
                 else
                 {
+                    _scheduler.ResumeJob(jk);
                     LogHelper.WriteLog($"任务“{task.TaskName}”启动成功,未来5次运行时间如下:");
                     List<DateTime> list = GetNextFireTime(task.CronExpressionString, 5);
                     foreach (var time in list)
