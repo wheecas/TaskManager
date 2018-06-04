@@ -131,8 +131,7 @@ namespace Scheduler.Job.TaskManager.Quartz
                         {
                             try
                             {
-
-                                ScheduleJob(taskUtil);
+                                ScheduleJob(taskUtil,true);//防止修改cron表达式
                             }
                             catch (Exception e)
                             {
