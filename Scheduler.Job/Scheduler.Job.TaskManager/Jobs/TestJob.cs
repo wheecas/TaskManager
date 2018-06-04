@@ -27,7 +27,7 @@ namespace Scheduler.Job.TaskManager.Jobs
                 testService.TestPrintAsync();
                 // 3. 开始执行相关任务
                 LogHelper.WriteLog("当前系统时间:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                Thread.Sleep(9000);
+                Thread.Sleep(1000);
             }
             catch (Exception ex)
             {

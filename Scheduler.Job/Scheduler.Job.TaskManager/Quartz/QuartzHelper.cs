@@ -232,7 +232,6 @@ namespace Scheduler.Job.TaskManager.Quartz
                 }
                 else
                 {
-                    _scheduler.ResumeJob(jk);
                     LogHelper.WriteLog($"任务“{task.TaskName}”启动成功,未来5次运行时间如下:");
                     List<DateTime> list = GetNextFireTime(task.CronExpressionString, 5);
                     foreach (var time in list)

@@ -10,7 +10,7 @@ namespace Scheduler.Job.Service
     {
         public void TestPrintAsync()
         {
-            Console.WriteLine("Test Print");
+            Console.WriteLine($"Test Print:{DateTime.Now.ToString("T")}");
         }
     }
 }
